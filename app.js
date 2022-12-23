@@ -111,13 +111,31 @@ const processCommand = function(obs, command) {
     var payload = directions[command.channel-1].data[command.note];
     switch (command.channel) {
         case CHANNEL_CLIPS:
+            obs
+                .call('SetInputSettings', {
+                    inputName: "Media Source",
+                    inputSettings: {
+                        local_file: payload
+                    }
+                });
             return
         case CHANNEL_TEXT:
-            log.debug(`Writing text ${payload}`)
+            obs
+                .call('SetInputSettings', {
+                    inputName: "Now Playing",
+                    inputSettings: {
+                        text: payload
+                    }
+                });
             return
         case CHANNEL_EGGS:
             return
         case CHANNEL_CONTROL:
+            log.info("Control: Clearing")
+            if (payload == 0) {
+                // TODO
+                // clearScreen(obs)
+            }
             return
         default:
             return
